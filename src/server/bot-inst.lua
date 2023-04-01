@@ -72,6 +72,39 @@ function botInst:new(bot, opp, net)
         lunge = false,
         oppLunge = false
     }
+
+    bot.Sword.ActivationEvent.Event:Connect(function()
+        o.lunge = false
+        o.tos = time()
+    end)
+
+    bot.Sword.LungeEvent.Event:Connect(function()
+        o.lunge = true
+        o.tos = time()
+    end)
+
+    bot.Humanoid:GetPropertyChangedSignal("Jump"):Connect(function()
+        if bot.Humanoid.Jump then
+            o.toj = time()
+        end
+    end)
+
+    opp.Sword.ActivationEvent.Event:Connect(function()
+        o.oppLunge = false
+        o.oppTos = time()
+    end)
+
+    opp.Sword.LungeEvent.Event:Connect(function()
+        o.oppLunge = true
+        o.oppTos = time()
+    end)
+
+    opp.Humanoid:GetPropertyChangedSignal("Jump"):Connect(function()
+        if opp.Humanoid.Jump then
+            o.oppToj = time()
+        end
+    end)
+
     setmetatable(o, self)
     self.__index = self
     return o
